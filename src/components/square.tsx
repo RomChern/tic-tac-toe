@@ -1,3 +1,3 @@
-export default function Square() {
-    return <button className="square">XYZ</button>
+export default function Square({value}:any) {
+    return <button className="square">{value}</button>
 }
