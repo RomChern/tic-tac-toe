@@ -1,10 +1,7 @@
 import Board from "./board"
+
 function App() {
-  return (
-    <>
-      <Board/>
-    </>
-  )
+  return <Board />
 }
 
 export default App
