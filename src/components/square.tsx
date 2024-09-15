@@ -1,4 +1,6 @@
-type TProps = { value: (string | null), onSquareClick: () => void }
+import { TSquare } from "../types/squares";
+
+type TProps = { value: TSquare, onSquareClick: () => void }
 
 export default function Square({ value, onSquareClick }: TProps) {
     return (

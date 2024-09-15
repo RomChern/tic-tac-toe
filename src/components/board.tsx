@@ -1,33 +1,28 @@
 import Square from "./square";
-import { calculateWinner } from "../utility/calculate-winner";
+import { fieldSize } from "./game.tsx"
+import { Fragment } from "react";
+import { TSquare } from "../types/squares.ts";
 
-export default function Board({xIsNext, squares, onPlay}: any) {
-    function handleClick(i: number) {
-        if (squares[i] || calculateWinner(squares)) {
-            return;
-        }
-        const nextSquares = squares.slice();
-        if (xIsNext) {
-            nextSquares[i] = "X";
-        } else {
-            nextSquares[i] = "O";
-        }
-        onPlay(nextSquares);
-    }
+type TProps = { squares: Array<TSquare>, onClick: (index: number) => void }
 
-    const winner: any = calculateWinner(squares);
-    let status;
-    if (winner) {
-        status = `Winner: ${winner}`;
-    } else {
-        status = "Next player:" + (xIsNext ? "X" : "O");
-    }
-
-
+export default function Board({ squares, onClick }: TProps) {
     return (
         <>
-           <div className="status">{status}</div>
-            <div className="board-row">
+            {squares.map((element: TSquare, index: number) => {
+                if ((index + 1) % fieldSize === 0 && index < squares.length - 1) {
+                    return (
+                        <Fragment key={index}>
+                            <Square value={element} onSquareClick={() => onClick(index)} />
+                            <br />
+                        </Fragment>
+                    )
+                }
+                return (<Square key={index} value={element} onSquareClick={() => onClick(index)} />)
+            })
+            }
+
+
+            {/* <div className="board-row">
                 <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
                 <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
                 <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
@@ -41,7 +36,7 @@ export default function Board({xIsNext, squares, onPlay}: any) {
                 <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
                 <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
                 <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-            </div>
+            </div> */}
         </>
     );
 }
