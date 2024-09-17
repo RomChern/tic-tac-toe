@@ -1,23 +1,22 @@
-import Square from "./square";
 import { fieldSize } from "./game.tsx"
-import { Fragment } from "react";
+import { Fragment, ReactNode } from "react";
 import { TSquare } from "../types/squares.ts";
 
-type TProps = { squares: Array<TSquare>, onClick: (index: number) => void }
+type TProps = { squares: Array<TSquare>, children: (element: TSquare, index: number) => ReactNode }
 
-export default function Board({ squares, onClick }: TProps) {
+export default function Board({ squares, children }: TProps) {
     return (
         <>
             {squares.map((element: TSquare, index: number) => {
                 if ((index + 1) % fieldSize === 0 && index < squares.length - 1) {
                     return (
                         <Fragment key={index}>
-                            <Square value={element} onSquareClick={() => onClick(index)} />
+                            {children(element, index)}
                             <br />
                         </Fragment>
                     )
                 }
-                return (<Square key={index} value={element} onSquareClick={() => onClick(index)} />)
+                return children(element, index)
             })
             }
 

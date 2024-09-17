@@ -3,8 +3,8 @@ import Board from "./board"
 import { TurnHistory } from "./turn-history";
 import { calculateWinner } from "../utility/calculate-winner";
 import { Status } from "./status";
-import { TSquare } from "../types/squares";
-export const fieldSize = 4;
+import { Square, TSquare } from "../types/squares";
+export const fieldSize = 3;
 
 
 export default function Game() {
@@ -33,9 +33,9 @@ export default function Game() {
         }
         const nextSquares = currentSquares.slice();
         if (xIsNext) {
-            nextSquares[i] = "X";
+            nextSquares[i] = Square.X;
         } else {
-            nextSquares[i] = "O";
+            nextSquares[i] = Square.O;
         }
         updatePlay(nextSquares);
     }
