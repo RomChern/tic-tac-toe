@@ -17,9 +17,9 @@ export default function Game() {
     const winner = calculateWinner(currentMoveSquares);
     const isGamefieldFullfilled = checkGamefieldFullfilled(currentMoveSquares)
     // const status = winner ? `Winner: ${winner}` : "Next player:" + (isXNext ? "X" : "O")
-    const status = getGameStatus(winner, isGamefieldFullfilled);
+    const status = getGameStatus();
     
-    function getGameStatus(winner: TSquare,isGamefieldFullfilled: boolean) {
+    function getGameStatus() {
         if (winner) {
             return `Winner: ${winner}`;
         }
@@ -31,14 +31,15 @@ export default function Game() {
     }
 
 
-    function updatePlay(currentMoveSquaresCopy: Array<TSquare>) {
-        const updatedHistory = [...history.slice(0, currentMove + 1), currentMoveSquaresCopy];
+    function updatePlay(currentMoveSquaresArray: Array<TSquare>) {
+        const updatedHistory = [...history.slice(0, currentMove + 1), currentMoveSquaresArray];
         setHistory(updatedHistory);
         setCurrentMove(updatedHistory.length - 1);
         setIsXNext(!isXNext);
     }
 
     function handleJumpToMove(selectedMove: number) {
+        //selectedMove - number of the move the user wants to return in game process.
         setCurrentMove(selectedMove);
         setIsXNext(selectedMove % 2 === 0);
     }
