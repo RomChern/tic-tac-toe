@@ -31,8 +31,8 @@ export default function Game() {
     }
 
 
-    function updatePlay(currentMoveSquares: Array<TSquare>) {
-        const updatedHistory = [...history.slice(0, currentMove + 1), currentMoveSquares];
+    function updatePlay(currentSquaresCondition: Array<TSquare>) {
+        const updatedHistory = [...history.slice(0, currentMove + 1), currentSquaresCondition];
         setHistory(updatedHistory);
         setCurrentMove(updatedHistory.length - 1);
         setIsXNext(!isXNext);
