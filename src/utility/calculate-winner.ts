@@ -1,4 +1,6 @@
-export function calculateWinner(squares: any) {
+import { TSquare } from "../types/squares";
+
+export function calculateWinner(squares: Array<TSquare>): TSquare {
     const lines = [
         [0, 1, 2],
         [3, 4, 5],
@@ -16,5 +18,6 @@ export function calculateWinner(squares: any) {
             return squares[a];
         }
     }
+    
     return null;
 }

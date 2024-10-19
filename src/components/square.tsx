@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { TSquare } from "../types/squares";
 
-type TProps = { value: (string | null), onSquareClick: () => void }
+type TProps = { value: TSquare, onSquareClick: () => void }
 
-export default function Square({ value, onSquareClick }: TProps) {
+ function Square({ value, onSquareClick }: TProps) {
     return (
-        <button className="square" onClick={onSquareClick}>{value}</button>
+        <div className="square" onClick={onSquareClick}>{value}</div>
     );
 }
+
+export default Square;
