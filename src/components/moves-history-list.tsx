@@ -2,9 +2,7 @@ import { TSquare } from "../types/squares";
 
 type TProps = { history: Array<Array<TSquare>>, onJumpTo: (move: number) => void }
 
-export const TurnHistory = ({ history, onJumpTo }: TProps) => {
-
-
+export const MovesHistoryList = ({ history, onJumpTo }: TProps) => {
     const moves = history.map((_, move: number) => {
         const description = move > 0 ? `Go to move # ${move}` : 'Go to game start';
         return (
@@ -13,5 +11,6 @@ export const TurnHistory = ({ history, onJumpTo }: TProps) => {
             </li>
         );
     });
-    return <ol> {moves}</ol>
+
+    return <ol>{moves}</ol>
 }

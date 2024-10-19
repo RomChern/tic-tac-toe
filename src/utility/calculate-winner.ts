@@ -18,5 +18,6 @@ export function calculateWinner(squares: Array<TSquare>): TSquare {
             return squares[a];
         }
     }
+    
     return null;
 }

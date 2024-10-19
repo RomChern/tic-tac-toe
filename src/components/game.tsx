@@ -1,53 +1,69 @@
 import { useState } from "react";
 import Board from "./board"
-import { TurnHistory } from "./turn-history";
+import { MovesHistoryList } from "./moves-history-list";
 import { calculateWinner } from "../utility/calculate-winner";
+import { checkGamefieldFullfilled } from "../utility/check-gamefield-filling";
 import { Status } from "./status";
-import { Square, TSquare } from "../types/squares";
+import { Square as ESquare, TSquare } from "../types/squares";
+import Square from "./square";
 export const fieldSize = 3;
 
 
 export default function Game() {
-    const [xIsNext, setXIsNext] = useState(true);
+    const [isXNext, setIsXNext] = useState(true);
     const [history, setHistory] = useState<Array<Array<TSquare>>>([Array(fieldSize ** 2).fill(null)]);
     const [currentMove, setCurrentMove] = useState(0);
-    const currentSquares = history[currentMove];
-    const winner = calculateWinner(currentSquares);
-    const status = winner ? `Winner: ${winner}` : "Next player:" + (xIsNext ? "X" : "O");
+    const currentMoveSquares = history[currentMove];
+    const winner = calculateWinner(currentMoveSquares);
+    const isGamefieldFullfilled = checkGamefieldFullfilled(currentMoveSquares)
+    // const status = winner ? `Winner: ${winner}` : "Next player:" + (isXNext ? "X" : "O")
+    const status = getGameStatus(winner, isGamefieldFullfilled);
+    
+    function getGameStatus(winner: TSquare,isGamefieldFullfilled: boolean) {
+        if (winner) {
+            return `Winner: ${winner}`;
+        }
+        if (isGamefieldFullfilled) {
+            return `Winner: friends`;
+        }
+        return "Next player:" + (isXNext ? "X" : "O")
 
-    function updatePlay(nextSquares: Array<TSquare>) {
-        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-        setHistory(nextHistory);
-        setCurrentMove(nextHistory.length - 1);
-        setXIsNext(!xIsNext);
     }
 
-    function handleJumpTo(nextMove: number) {
-        setCurrentMove(nextMove);
-        setXIsNext(nextMove % 2 === 0);
+
+    function updatePlay(currentMoveSquaresCopy: Array<TSquare>) {
+        const updatedHistory = [...history.slice(0, currentMove + 1), currentMoveSquaresCopy];
+        setHistory(updatedHistory);
+        setCurrentMove(updatedHistory.length - 1);
+        setIsXNext(!isXNext);
+    }
+
+    function handleJumpToMove(selectedMove: number) {
+        setCurrentMove(selectedMove);
+        setIsXNext(selectedMove % 2 === 0);
     }
 
     function handleClick(i: number) {
-        if (currentSquares[i] || winner) {
+        if (currentMoveSquares[i] || winner) {
             return;
         }
-        const nextSquares = currentSquares.slice();
-        if (xIsNext) {
-            nextSquares[i] = Square.X;
+        const currentMoveSquaresCopy = currentMoveSquares.slice();
+        if (isXNext) {
+            currentMoveSquaresCopy[i] = ESquare.X;
         } else {
-            nextSquares[i] = Square.O;
+            currentMoveSquaresCopy[i] = ESquare.O;
         }
-        updatePlay(nextSquares);
+        updatePlay(currentMoveSquaresCopy);
     }
 
     return (
         <div className="game">
             <Status status={status} />
             <div className="game-board">
-                <Board squares={currentSquares} onClick={handleClick} />
+                <Board squares={currentMoveSquares}>{(element, index) => <Square value={element} onSquareClick={() => handleClick(index)} />}</Board>
             </div>
             <div className="game-info">
-                <TurnHistory history={history} onJumpTo={handleJumpTo} />
+                <MovesHistoryList history={history} onJumpTo={handleJumpToMove} />
             </div>
         </div>
     );

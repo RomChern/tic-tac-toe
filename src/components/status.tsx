@@ -1,8 +1,5 @@
-import { memo } from "react"
+type TProps = { status: string }
 
-type TProps = {status: string}
-
-export const Status = memo(({ status }: TProps) => {
-    console.log("render-status")
+export const Status = ({ status }: TProps) => {
     return <div className="status">{status}</div>
-}) 
+}
